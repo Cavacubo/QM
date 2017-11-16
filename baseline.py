@@ -164,10 +164,10 @@ class Predictor(object):
         predictions = []
 
         for sample in samples:
-            sample = sample.strip().split(",")[1] # column 0 is the index
             if label_only:
             	predictions.append(self.pipeline.predict([sample])[0])
             else:
+                sample = sample.strip().split(",")[1]  # column 0 is the index
             	predictions.append((sample, self.pipeline.predict([sample])[0]))
 
         return predictions
@@ -180,7 +180,7 @@ class Predictor(object):
     	test_X = []
     	for sample in samples:
     		sample = sample.strip()
-    		X,y = sample.split("\t")
+    		X,y = sample.split(",")
     		test_y.append(y)
     		test_X.append(X)
 
