@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Author: Mathias Mueller / mathias.mueller@uzh.ch
+# Edited: Albina Kudoyarova / albina.kudoyarova@uzh.ch
+# LALA at the Kaggle.com
 
 from __future__ import unicode_literals
 
@@ -187,8 +189,8 @@ class Predictor(object):
     	logging.debug("Number of gold samples found: %d" % len(test_y))
 
     	predictions = self.predict(test_X, label_only=True)
-    	logging.info(metrics.classification_report(test_y, predictions, \
-    		target_names=None))
+        report = metrics.classification_report(test_y, predictions, target_names=None)
+        logging.info(report)
 
 
 def parse_cmd():
