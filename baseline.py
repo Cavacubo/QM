@@ -285,6 +285,25 @@ def main():
 
     if args.split:
         logging.debug("splitting file %s into 2 files" % args.data)
+
+        # fake
+        # test_arr = [str(i) for i in range (0, 100)]
+
+        lines = []
+        if args.data:
+            with open(args.data, 'r', ) as f:
+                lines = f.readlines()
+
+            header_line = lines[0]
+            res = train_test_split(lines[1:], shuffle=True, test_size=0.1)
+
+            with open("{}.split90".format(args.data), 'w') as out:
+                out.write(header_line)
+                out.writelines(res[0])
+
+            with open("{}.split10".format(args.data), 'w') as out:
+                out.write(header_line)
+                out.writelines(res[1])
         return
 
     if args.train:
