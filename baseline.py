@@ -10,7 +10,6 @@ from __future__ import unicode_literals
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neural_network import MLPClassifier
-from sklearn.dummy import DummyClassifier
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 
@@ -115,10 +114,7 @@ class Trainer(object):
         vectorizer, followed by a kind of classifier.
         """
         self.vectorizer = CountVectorizer(stop_words=None)
-        if self._classifier == "mlp":
-        	self.classifier = MLPClassifier(verbose=True, early_stopping=False) # TODO: early stopping?
-        else:
-        	self.classifier = DummyClassifier(strategy="stratified")
+        self.classifier = MLPClassifier(verbose=True, early_stopping=False) # TODO: early stopping?
 
         self.pipeline = Pipeline([
             ("vectorizer", self.vectorizer),
