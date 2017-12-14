@@ -110,6 +110,8 @@ class Trainer(object):
         Builds an sklearn Pipeline. The pipeline consists of a kind of
         vectorizer, followed by a kind of classifier.
         """
+        # strip_accents="ascii" is a bad idea, results in lower accuracy due to the fact, that specific chars are used in specific dialects
+        # analyzer="words" is a bad idea,  results in lower accuracy
         self.vectorizer = CountVectorizer(ngram_range=(1,4), analyzer='char', stop_words=None)
         self.classifier = MLPClassifier(verbose=True, early_stopping=False) # TODO: early stopping?
 
