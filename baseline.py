@@ -299,17 +299,17 @@ def main():
 
         lines = []
         if args.data:
-            with open(args.data, 'r', ) as f:
+            with codecs.open(args.data, 'r', encoding="utf-8") as f:
                 lines = f.readlines()
 
             header_line = lines[0]
             res = train_test_split(lines[1:], shuffle=args.shuffle, test_size=args.test_size)
 
-            with open("{}.split{}".format(args.data, (int)((1 - args.test_size)*100)), 'w') as out:
+            with codecs.open("{}.split{}".format(args.data, (int)((1 - args.test_size)*100)), 'w', encoding="utf-8") as out:
                 out.write(header_line)
                 out.writelines(res[0])
 
-            with open("{}.split{}".format(args.data, (int)(args.test_size*100)), 'w') as out:
+            with codecs.open("{}.split{}".format(args.data, (int)(args.test_size*100)), 'w', encoding="utf-8") as out:
                 out.write(header_line)
                 out.writelines(res[1])
 
