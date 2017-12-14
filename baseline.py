@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 
 from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.neural_network import MLPClassifier
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
@@ -112,7 +112,7 @@ class Trainer(object):
         """
         # strip_accents="ascii" is a bad idea, results in lower accuracy due to the fact, that specific chars are used in specific dialects
         # analyzer="words" is a bad idea,  results in lower accuracy
-        self.vectorizer = CountVectorizer(ngram_range=(1,4), analyzer='char', stop_words=None)
+        self.vectorizer = TfidfVectorizer(ngram_range=(1,6), analyzer='char')
         self.classifier = MLPClassifier(verbose=True, early_stopping=False) # TODO: early stopping?
 
         self.pipeline = Pipeline([
