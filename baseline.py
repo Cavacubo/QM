@@ -286,9 +286,6 @@ def main():
     if args.split:
         logging.debug("splitting file %s into 2 files" % args.data)
 
-        # fake
-        # test_arr = [str(i) for i in range (0, 100)]
-
         lines = []
         if args.data:
             with open(args.data, 'r', ) as f:
@@ -304,6 +301,8 @@ def main():
             with open("{}.split10".format(args.data), 'w') as out:
                 out.write(header_line)
                 out.writelines(res[1])
+
+        #splitting is a separate step, so we stop after it is done
         return
 
     if args.train:
