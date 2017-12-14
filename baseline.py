@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neural_network import MLPClassifier
 from sklearn.dummy import DummyClassifier
 from sklearn import metrics
+from sklearn.model_selection import train_test_split
 
 from collections import defaultdict
 
@@ -51,6 +52,9 @@ class Trainer(object):
         self.vectorizer = None
         self.classifier = None
         self.pipeline = None
+
+    def train_test_split(self):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
     def train(self):
         """
@@ -200,7 +204,7 @@ def parse_cmd():
     parser.add_argument(
         "-m", "--model",
         type=str,
-        required=True,
+        required=False,
         help="if --train, then save model to this path. If --predict, use saved model at this path."
     )
     parser.add_argument(
@@ -228,6 +232,12 @@ def parse_cmd():
         action="store_true",
         required=False,
         help="evaluate trained model, write report to STDOUT. If --evaluate, data in --samples is assumed to include the gold label"
+    )
+    mode_options.add_argument(
+        "--split",
+        action="store_true",
+        required=False,
+        help="split data from --data to train and test sets and then exit"
     )
 
     train_options = parser.add_argument_group("training parameters")
@@ -272,6 +282,10 @@ def main():
     else:
         level = logging.WARNING
     logging.basicConfig(level=level, format='%(levelname)s: %(message)s')
+
+    if args.split:
+        logging.debug("splitting file %s into 2 files" % args.data)
+        return
 
     if args.train:
         t = Trainer(model=args.model,
