@@ -52,9 +52,6 @@ class Trainer(object):
         self.classifier = None
         self.pipeline = None
 
-    def train_test_split(self):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
-
     def train(self):
         """
         Preprocesses data, fits a model, and finally saves the model to a file.
@@ -113,7 +110,7 @@ class Trainer(object):
         Builds an sklearn Pipeline. The pipeline consists of a kind of
         vectorizer, followed by a kind of classifier.
         """
-        self.vectorizer = CountVectorizer(stop_words=None)
+        self.vectorizer = CountVectorizer(ngram_range=(1,4), analyzer='char', stop_words=None)
         self.classifier = MLPClassifier(verbose=True, early_stopping=False) # TODO: early stopping?
 
         self.pipeline = Pipeline([
@@ -262,6 +259,24 @@ def parse_cmd():
         help="Path to file containing samples for which a class should be predicted. If --samples is not given, input from STDIN is assumed"
     )
 
+    split_options = parser.add_argument_group("split parameters")
+
+    split_options.add_argument(
+        "--shuffle",
+        type=bool,
+        default=True,
+        required=False,
+        help="flag to force data shuffling when splitting"
+    )
+
+    split_options.add_argument(
+        "--test-size",
+        type=float,
+        default=0.1,
+        required=False,
+        help="a number between 0 and 1 to specify the percentage of a test subset, e.g. 0.1 would mean 10 percent i.e. 90/10 split"
+    )
+
     args = parser.parse_args()
 
     return args
@@ -288,13 +303,13 @@ def main():
                 lines = f.readlines()
 
             header_line = lines[0]
-            res = train_test_split(lines[1:], shuffle=True, test_size=0.1)
+            res = train_test_split(lines[1:], shuffle=args.shuffle, test_size=args.test_size)
 
-            with open("{}.split90".format(args.data), 'w') as out:
+            with open("{}.split{}".format(args.data, (int)((1 - args.test_size)*100)), 'w') as out:
                 out.write(header_line)
                 out.writelines(res[0])
 
-            with open("{}.split10".format(args.data), 'w') as out:
+            with open("{}.split{}".format(args.data, (int)(args.test_size*100)), 'w') as out:
                 out.write(header_line)
                 out.writelines(res[1])
 
