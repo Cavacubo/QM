@@ -15,14 +15,22 @@ Then clone the repository to your local computer or one of our servers:
 
 ## Usage
 
-To train a baseline model, use
+To split a train set into train and test sets, use
 
-    python baseline.py --train --model model_dummy.pkz --data train.csv --verbose --classifier dummy
+    python lala_team.py --split --data train.csv
+
+To train a model, use
+
+    python lala_team.py --train --model model_ngram_1_6_tfidf.pkl --data train.csv.split90 --verbose
+
+To evaluate a trained model, use
+
+    python lala_team.py --evaluate --samples train.csv.split10 --model model_ngram_1_6_tfidf.pkl --verbose
 
 To use a trained model to make predictions for the test samples:
 
-    python baseline.py --predict --samples test.csv --model model_dummy.pkz > sandboxSubmission_dummy.csv
+    python lala_team.py --predict --samples test.csv --model model_ngram_1_6_tfidf.pkl > Sandbox_tfidf_1_6.csv
 
 For other options, use `--help`:
 
-    python baseline.py --help
+    python lala_team.py --help
